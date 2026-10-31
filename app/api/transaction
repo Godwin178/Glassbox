@@ -1,0 +1,56 @@
+app/api/transaction/
+import { NextResponse } from "next/server";
+import { Connection } from "@solana/web3.js";
+
+export async function GET(
+  _request: Request,
+  { params }: { params: { signature: string } }
+) {
+  try {
+    const signature = params.signature;
+
+    if (!/^[1-9A-HJ-NP-Za-km-z]{64,88}$/.test(signature)) {
+      return NextResponse.json(
+        { error: "Invalid transaction signature" },
+        { status: 400 }
+      );
+    }
+
+    const connection = new Connection(
+      process.env.SOLANA_RPC_URL ||
+        "https://api.mainnet-beta.solana.com",
+      "confirmed"
+    );
+
+    const result = await connection.getSignatureStatuses(
+      [signature],
+      { searchTransactionHistory: true }
+    );
+
+    const status = result.value[0];
+
+    if (!status) {
+      return NextResponse.json({
+        signature,
+        found: false,
+        message: "Transaction not found",
+      });
+    }
+
+    return NextResponse.json({
+      signature,
+      found: true,
+      confirmationStatus: status.confirmationStatus,
+      confirmed: status.confirmationStatus === "confirmed" ||
+        status.confirmationStatus === "finalized",
+      finalized: status.confirmationStatus === "finalized",
+      error: status.err,
+      slot: status.slot,
+    });
+  } catch {
+    return NextResponse.json(
+      { error: "Transaction verification failed" },
+      { status: 500 }
+    );
+  }
+}
