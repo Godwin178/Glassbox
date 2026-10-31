@@ -1,4 +1,4 @@
-app/api/wallet/[address]/route.ts
+
 import { NextResponse } from "next/server";
 import { Connection, PublicKey } from "@solana/web3.js";
 
