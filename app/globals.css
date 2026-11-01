@@ -100,6 +100,11 @@ a.button {
   word-break: break-all;
 }
 
+/* Keeps dates, statuses and labels on one line instead of splitting them. */
+.nowrap {
+  white-space: nowrap;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;

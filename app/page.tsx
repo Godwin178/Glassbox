@@ -605,10 +605,23 @@ interface ProposalEntry {
   status?: string;
 }
 
+const STATUS_LABELS: Record<string, string> = {
+  complete: "Complete",
+  "in-progress": "In progress",
+  planned: "Planned",
+};
+
+/** Renders a milestone/proposal status in title case. */
+function formatStatus(status?: string): string {
+  if (!status) {
+    return "—";
+  }
+  return STATUS_LABELS[status] ?? status;
+}
+
 function MilestonesPanel() {
   const [milestones, setMilestones] = useState<MilestoneEntry[]>([]);
   const [proposals, setProposals] = useState<ProposalEntry[]>([]);
-  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -627,7 +640,6 @@ function MilestonesPanel() {
         if (!active) return;
         setMilestones(milestoneData.milestones);
         setProposals(proposalData.proposals);
-        setMessage(milestoneData.message ?? proposalData.message ?? null);
         setError(null);
       })
       .catch((requestError) => {
@@ -658,60 +670,73 @@ function MilestonesPanel() {
       {loading ? <p className="muted">Loading milestones…</p> : null}
       {error ? <p className="error">{error}</p> : null}
 
-      {!loading && !error && milestones.length === 0 && proposals.length === 0 ? (
-        <p className="muted">
-          {message ?? "No milestones or proposals have been published yet."}
-        </p>
-      ) : null}
+      {!loading && !error ? (
+        <>
+          <h3>Milestones</h3>
 
-      {milestones.length ? (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Milestone</th>
-              <th>Status</th>
-              <th>Target date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {milestones.map((milestone, index) => (
-              <tr key={index}>
-                <td>
-                  <strong>{milestone.title}</strong>
-                  {milestone.description ? (
-                    <div className="muted">{milestone.description}</div>
-                  ) : null}
-                </td>
-                <td>{milestone.status ?? "—"}</td>
-                <td>{milestone.dueDate ?? "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : null}
+          {milestones.length ? (
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Milestone</th>
+                  <th>Status</th>
+                  <th>Target date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {milestones.map((milestone, index) => (
+                  <tr key={index}>
+                    <td>
+                      <strong>{milestone.title}</strong>
+                      {milestone.description ? (
+                        <div className="muted">{milestone.description}</div>
+                      ) : null}
+                    </td>
+                    <td className="nowrap">
+                      {formatStatus(milestone.status)}
+                    </td>
+                    <td className="nowrap">{milestone.dueDate ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="muted">No milestones have been published yet.</p>
+          )}
 
-      {proposals.length ? (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Proposal</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {proposals.map((proposal, index) => (
-              <tr key={index}>
-                <td>
-                  <strong>{proposal.title}</strong>
-                  {proposal.description ? (
-                    <div className="muted">{proposal.description}</div>
-                  ) : null}
-                </td>
-                <td>{proposal.status ?? "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <h3>Community proposals</h3>
+
+          {proposals.length ? (
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Proposal</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {proposals.map((proposal, index) => (
+                  <tr key={index}>
+                    <td>
+                      <strong>{proposal.title}</strong>
+                      {proposal.description ? (
+                        <div className="muted">{proposal.description}</div>
+                      ) : null}
+                    </td>
+                    <td className="nowrap">
+                      {formatStatus(proposal.status)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="muted">
+              No community proposals have been submitted yet. Open a pull
+              request to publish one.
+            </p>
+          )}
+        </>
       ) : null}
     </section>
   );
