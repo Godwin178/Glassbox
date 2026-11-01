@@ -136,3 +136,35 @@ a.button {
   font-size: 24px;
   margin: 4px 0 0;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 24px 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  /* Long addresses, signatures and mints stay readable on small screens. */
+  .data-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .site-nav {
+    gap: 12px;
+  }
+}

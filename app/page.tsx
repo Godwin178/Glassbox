@@ -524,7 +524,15 @@ function FundingPanel() {
             <p className="muted">
               {funding.transactionsAnalyzed} recent{" "}
               {funding.transactionsAnalyzed === 1 ? "transaction" : "transactions"}{" "}
-              analyzed from <span className="mono">{funding.wallet}</span>
+              analyzed from the funding wallet{" "}
+              <a
+                className="mono"
+                href={`${EXPLORER}/address/${funding.wallet}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {funding.wallet}
+              </a>
             </p>
 
             <p>

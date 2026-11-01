@@ -103,7 +103,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project Status
 
-Wallet inspection, transaction verification, token transparency and funding transparency are implemented. Milestone and proposal tracking are functional but their published records are empty until maintainers add entries.
+Wallet inspection, transaction verification, token transparency and funding transparency are implemented, with published milestones. Community proposals are tracked but no records have been submitted yet — open a pull request to publish one.
 
 ## License
 

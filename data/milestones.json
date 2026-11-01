@@ -1,3 +1,28 @@
 {
-  "milestones": []
+  "milestones": [
+    {
+      "title": "Milestone 1: wallet inspection",
+      "description": "Balance, SPL token holdings and recent activity for any Solana wallet, read live from the blockchain.",
+      "status": "complete",
+      "dueDate": "2026-Q1"
+    },
+    {
+      "title": "Milestone 2: transaction verification",
+      "description": "Confirmation status, fee, slot, per-account SOL movements and per-mint token movements for any transaction.",
+      "status": "complete",
+      "dueDate": "2026-Q1"
+    },
+    {
+      "title": "Milestone 3: funding transparency and downloadable reports",
+      "description": "On-chain funding wallet summary plus one-click JSON wallet and CSV funding reports.",
+      "status": "complete",
+      "dueDate": "2026-Q1"
+    },
+    {
+      "title": "Milestone 4: dashboard refinements",
+      "description": "Mobile-responsive dashboard layout, funding wallet display improvements and lint tooling.",
+      "status": "in-progress",
+      "dueDate": "2026-Q2"
+    }
+  ]
 }
