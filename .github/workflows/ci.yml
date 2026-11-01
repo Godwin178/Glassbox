@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build:
-    name: Build and Type Check
+    name: Build, Type Check and Test
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +33,9 @@ jobs:
 
       - name: Type check
         run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
 
       - name: Build Glassbox
         run: npm run build

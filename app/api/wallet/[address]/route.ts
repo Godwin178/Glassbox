@@ -1,41 +1,65 @@
-
 import { NextResponse } from "next/server";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
+import { getConnection, lamportsToSol } from "@/lib/solana";
+import { isValidAddress, normalizeInput } from "@/lib/validation";
+import { fetchTokenHoldings } from "@/lib/tokens";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(
   _request: Request,
   { params }: { params: { address: string } }
 ) {
+  const address = normalizeInput(params.address);
+
+  if (!isValidAddress(address)) {
+    return NextResponse.json(
+      { error: "Invalid wallet address" },
+      { status: 400 }
+    );
+  }
+
+  let wallet: PublicKey;
+
   try {
-    const wallet = new PublicKey(params.address);
+    wallet = new PublicKey(address);
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid wallet address" },
+      { status: 400 }
+    );
+  }
 
-    if (!PublicKey.isOnCurve(wallet)) {
-      return NextResponse.json(
-        { error: "Invalid wallet address" },
-        { status: 400 }
-      );
-    }
+  const connection = getConnection();
 
-    const rpcUrl =
-      process.env.SOLANA_RPC_URL ||
-      "https://api.mainnet-beta.solana.com";
-
-    const connection = new Connection(rpcUrl, "confirmed");
-
-    const [balance, signatures] = await Promise.all([
+  try {
+    const [balance, signatures, tokens] = await Promise.all([
       connection.getBalance(wallet),
-      connection.getSignaturesForAddress(wallet, { limit: 10 }),
+      connection.getSignaturesForAddress(wallet, { limit: 20 }),
+      fetchTokenHoldings(connection, wallet),
     ]);
 
     return NextResponse.json({
       address: wallet.toBase58(),
-      balanceSOL: balance / 1_000_000_000,
-      recentTransactions: signatures,
+      balanceLamports: balance,
+      balanceSOL: lamportsToSol(balance),
+      tokens,
+      recentTransactions: signatures.map((signature) => ({
+        signature: signature.signature,
+        slot: signature.slot,
+        blockTime: signature.blockTime ?? null,
+        failed: Boolean(signature.err),
+        memo: signature.memo ?? null,
+      })),
     });
-  } catch {
+  } catch (error) {
+    console.error("Wallet inspection failed:", error);
     return NextResponse.json(
-      { error: "Unable to inspect this wallet. Check the address and try again." },
-      { status: 400 }
+      {
+        error:
+          "Unable to reach the Solana network. Check your RPC configuration and try again.",
+      },
+      { status: 502 }
     );
   }
 }
