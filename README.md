@@ -47,6 +47,25 @@ Copy `.env.example` to `.env.local` and adjust:
 
 Glassbox never requests private keys or seed phrases and performs read-only blockchain access.
 
+### Publishing milestones & proposals
+
+Milestones and community proposals are published as versioned JSON records, so every change is auditable in git history. To publish one, open a pull request adding an entry to `data/milestones.json` or `data/proposals.json`:
+
+```json
+{
+  "milestones": [
+    {
+      "title": "Milestone 1: wallet inspection",
+      "description": "Shipped balance and token views.",
+      "status": "complete",
+      "dueDate": "2026-Q1"
+    }
+  ]
+}
+```
+
+`title` is required; `description`, `status` and `dueDate` are optional. The dashboard reads these files live, and unit tests guard the record schema.
+
 ## API
 
 | Endpoint | Description |

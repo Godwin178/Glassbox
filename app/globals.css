@@ -71,6 +71,21 @@ a.button {
   color: #93a4c3;
 }
 
+.site-nav {
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  color: #9db4d8;
+}
+
+.site-nav a:hover {
+  color: #ffffff;
+}
+
 .error {
   color: #ff8b8b;
 }

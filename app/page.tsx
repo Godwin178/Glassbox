@@ -1,8 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type FormEvent,
+} from "react";
 
 const EXPLORER = "https://explorer.solana.com";
+const NETWORK = process.env.NEXT_PUBLIC_SOLANA_NETWORK || "mainnet-beta";
 
 interface TokenHolding {
   account: string;
@@ -124,27 +130,36 @@ function WalletInspector() {
     }
   }, [address]);
 
+  const handleSubmit = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+      inspect();
+    },
+    [inspect]
+  );
+
   return (
-    <section className="card">
+    <section className="card" id="wallet">
       <h2>Inspect a Solana wallet</h2>
       <p className="muted">
         Balance, token holdings and recent activity, read directly from the
         Solana blockchain.
       </p>
 
-      <input
-        className="input"
-        value={address}
-        onChange={(event) => setAddress(event.target.value)}
-        placeholder="Enter a public Solana wallet address"
-        aria-label="Solana wallet address"
-      />
-
-      <p>
-        <button className="button" onClick={inspect} disabled={loading}>
-          {loading ? "Inspecting…" : "Inspect wallet"}
-        </button>
-      </p>
+      <form onSubmit={handleSubmit}>
+        <input
+          className="input"
+          value={address}
+          onChange={(event) => setAddress(event.target.value)}
+          placeholder="Enter a public Solana wallet address"
+          aria-label="Solana wallet address"
+        />
+        <p>
+          <button className="button" type="submit" disabled={loading}>
+            {loading ? "Inspecting…" : "Inspect wallet"}
+          </button>
+        </p>
+      </form>
 
       {error ? <p className="error">{error}</p> : null}
 
@@ -210,7 +225,9 @@ function WalletInspector() {
                 ))}
               </tbody>
             </table>
-          ) : null}
+          ) : (
+            <p className="muted">No SPL token accounts found for this wallet.</p>
+          )}
 
           {result.recentTransactions.length ? (
             <table className="data-table">
@@ -243,7 +260,9 @@ function WalletInspector() {
                 ))}
               </tbody>
             </table>
-          ) : null}
+          ) : (
+            <p className="muted">No recent transactions found for this wallet.</p>
+          )}
         </>
       ) : null}
     </section>
@@ -286,27 +305,36 @@ function TransactionVerifier() {
     }
   }, [signature]);
 
+  const handleSubmit = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+      verify();
+    },
+    [verify]
+  );
+
   return (
-    <section className="card">
+    <section className="card" id="transaction">
       <h2>Verify a transaction</h2>
       <p className="muted">
         Confirmation status, fee, SOL movements and token movements for any
         transaction.
       </p>
 
-      <input
-        className="input"
-        value={signature}
-        onChange={(event) => setSignature(event.target.value)}
-        placeholder="Enter a transaction signature"
-        aria-label="Transaction signature"
-      />
-
-      <p>
-        <button className="button" onClick={verify} disabled={loading}>
-          {loading ? "Verifying…" : "Verify transaction"}
-        </button>
-      </p>
+      <form onSubmit={handleSubmit}>
+        <input
+          className="input"
+          value={signature}
+          onChange={(event) => setSignature(event.target.value)}
+          placeholder="Enter a transaction signature"
+          aria-label="Transaction signature"
+        />
+        <p>
+          <button className="button" type="submit" disabled={loading}>
+            {loading ? "Verifying…" : "Verify transaction"}
+          </button>
+        </p>
+      </form>
 
       {error ? <p className="error">{error}</p> : null}
 
@@ -341,6 +369,12 @@ function TransactionVerifier() {
 
           <p className="muted">{formatTimestamp(result.blockTime ?? null)}</p>
           <p className="mono">Fee payer: {result.feePayer ?? "—"}</p>
+
+          {result.status === "failed" && result.error ? (
+            <p className="error mono">
+              Transaction error: {JSON.stringify(result.error)}
+            </p>
+          ) : null}
 
           {result.balanceChanges?.length ? (
             <table className="data-table">
@@ -396,6 +430,15 @@ function TransactionVerifier() {
                 ))}
               </tbody>
             </table>
+          ) : (
+            <p className="muted">No token balance changes in this transaction.</p>
+          )}
+
+          {result.balanceChanges?.length === 0 &&
+          result.tokenChanges?.length === 0 ? (
+            <p className="muted">
+              No SOL or token balance changes recorded in this transaction.
+            </p>
           ) : null}
         </>
       ) : null}
@@ -406,24 +449,53 @@ function TransactionVerifier() {
 function FundingPanel() {
   const [funding, setFunding] = useState<FundingResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
+    let active = true;
+    setLoading(true);
+
     fetchJson<FundingResult>("/api/funding")
-      .then(setFunding)
-      .catch((requestError) =>
+      .then((data) => {
+        if (!active) return;
+        setFunding(data);
+        setError(null);
+      })
+      .catch((requestError) => {
+        if (!active) return;
         setError(
           requestError instanceof Error
             ? requestError.message
             : "Could not load funding data."
-        )
-      );
-  }, []);
+        );
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [reloadKey]);
 
   return (
-    <section className="card">
+    <section className="card" id="funding">
       <h2>Public funding transparency</h2>
 
-      {error ? <p className="error">{error}</p> : null}
+      {loading ? <p className="muted">Loading funding data…</p> : null}
+
+      {error ? (
+        <p className="error">
+          {error}{" "}
+          <button
+            className="button"
+            onClick={() => setReloadKey((key) => key + 1)}
+          >
+            Retry
+          </button>
+        </p>
+      ) : null}
 
       {funding ? (
         funding.configured ? (
@@ -497,11 +569,140 @@ function FundingPanel() {
                   ))}
                 </tbody>
               </table>
-            ) : null}
+            ) : (
+              <p className="muted">
+                No funding transactions found for this wallet yet.
+              </p>
+            )}
           </>
         ) : (
           <p className="muted">{funding.message}</p>
         )
+      ) : null}
+    </section>
+  );
+}
+
+interface MilestoneEntry {
+  title: string;
+  description?: string;
+  status?: string;
+  dueDate?: string;
+}
+
+interface ProposalEntry {
+  title: string;
+  description?: string;
+  status?: string;
+}
+
+function MilestonesPanel() {
+  const [milestones, setMilestones] = useState<MilestoneEntry[]>([]);
+  const [proposals, setProposals] = useState<ProposalEntry[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    Promise.all([
+      fetchJson<{ milestones: MilestoneEntry[]; message: string | null }>(
+        "/api/milestones"
+      ),
+      fetchJson<{ proposals: ProposalEntry[]; message: string | null }>(
+        "/api/proposals"
+      ),
+    ])
+      .then(([milestoneData, proposalData]) => {
+        if (!active) return;
+        setMilestones(milestoneData.milestones);
+        setProposals(proposalData.proposals);
+        setMessage(milestoneData.message ?? proposalData.message ?? null);
+        setError(null);
+      })
+      .catch((requestError) => {
+        if (!active) return;
+        setError(
+          requestError instanceof Error
+            ? requestError.message
+            : "Could not load milestones."
+        );
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return (
+    <section className="card" id="milestones">
+      <h2>Milestones &amp; community proposals</h2>
+      <p className="muted">
+        Published through versioned data files in this repository, so every
+        change is auditable in git history.
+      </p>
+
+      {loading ? <p className="muted">Loading milestones…</p> : null}
+      {error ? <p className="error">{error}</p> : null}
+
+      {!loading && !error && milestones.length === 0 && proposals.length === 0 ? (
+        <p className="muted">
+          {message ?? "No milestones or proposals have been published yet."}
+        </p>
+      ) : null}
+
+      {milestones.length ? (
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Milestone</th>
+              <th>Status</th>
+              <th>Target date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {milestones.map((milestone, index) => (
+              <tr key={index}>
+                <td>
+                  <strong>{milestone.title}</strong>
+                  {milestone.description ? (
+                    <div className="muted">{milestone.description}</div>
+                  ) : null}
+                </td>
+                <td>{milestone.status ?? "—"}</td>
+                <td>{milestone.dueDate ?? "—"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : null}
+
+      {proposals.length ? (
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Proposal</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {proposals.map((proposal, index) => (
+              <tr key={index}>
+                <td>
+                  <strong>{proposal.title}</strong>
+                  {proposal.description ? (
+                    <div className="muted">{proposal.description}</div>
+                  ) : null}
+                </td>
+                <td>{proposal.status ?? "—"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : null}
     </section>
   );
@@ -523,6 +724,13 @@ export default function Home() {
         <p className="muted">
           Solana Transparency &amp; Accountability Toolkit
         </p>
+        <p className="muted mono">Network: {NETWORK}</p>
+        <nav className="site-nav" aria-label="Sections">
+          <a href="#wallet">Wallet</a>
+          <a href="#transaction">Transactions</a>
+          <a href="#funding">Funding</a>
+          <a href="#milestones">Milestones</a>
+        </nav>
       </header>
 
       <section style={{ marginTop: 32 }}>
@@ -537,6 +745,7 @@ export default function Home() {
       <WalletInspector />
       <TransactionVerifier />
       <FundingPanel />
+      <MilestonesPanel />
 
       <section className="card">
         <h2>Platform features</h2>
