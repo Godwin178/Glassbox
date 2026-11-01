@@ -16,6 +16,7 @@ To make blockchain transparency accessible through clear, verifiable information
 - **Public funding transparency** — a live on-chain summary of a public funding wallet: total received, total spent and current balance, with per-transaction records.
 - **Downloadable reports** — one-click JSON wallet reports and CSV funding reports straight from the live blockchain data.
 - **Milestone & proposal tracking** — published through versioned JSON data files in this repository, so every change is auditable in git history.
+- **Funding demo** — a clearly labelled simulated funding walkthrough at [`/demo`](https://glassbox-opensource.vercel.app/demo), showing the report format without touching live data.
 
 ## Technology
 
@@ -63,7 +64,7 @@ Milestones and community proposals are published as versioned JSON records, so e
 }
 ```
 
-`title` is required; `description` and `status` are optional. The dashboard shows "See Git history" for completed milestones and "To be scheduled" for planned ones, so no dates need to be invented. The dashboard reads these files live, and unit tests guard the record schema.
+`title` is required; `description`, `status` and `dueDate` are optional. A completed milestone may carry a `dueDate` in `YYYY-MM` format — but only the month of the feature's actual implementation commit in git history, which the dashboard shows as evidence. Planned milestones display "To be scheduled" instead of an invented date. The dashboard reads these files live, and unit tests guard the record schema.
 
 ## API
 
@@ -110,6 +111,7 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the ful
 - **Public funding transparency** — live on-chain funding wallet summary with per-transaction records.
 - **Downloadable reports** — one-click JSON wallet reports and CSV funding reports.
 - **Milestone & proposal tracking** — published through versioned JSON data files and rendered on the dashboard.
+- **Funding demo** — a simulated-data walkthrough page at `/demo`, clearly separated from live wallet data.
 
 **Planned development (not yet implemented):**
 

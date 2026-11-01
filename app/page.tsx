@@ -621,13 +621,15 @@ function formatStatus(status?: string): string {
 }
 
 /**
- * Completed milestones point to auditable git history; planned
+ * Completed milestones show their implementation month (YYYY-MM) from
+ * git history, falling back to a pointer at that history; planned
  * milestones have no confirmed schedule yet, so none is invented.
  */
 function scheduleEvidence(milestone: MilestoneEntry): string {
-  return milestone.status === "complete"
-    ? "See Git history"
-    : "To be scheduled";
+  if (milestone.status === "complete") {
+    return milestone.dueDate ?? "See Git history";
+  }
+  return "To be scheduled";
 }
 
 function MilestonesPanel() {
@@ -777,6 +779,7 @@ export default function Home() {
           <a href="#transaction">Transactions</a>
           <a href="#funding">Funding</a>
           <a href="#milestones">Milestones</a>
+          <a href="/demo">Funding demo</a>
         </nav>
       </header>
 

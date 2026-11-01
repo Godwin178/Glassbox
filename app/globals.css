@@ -105,6 +105,20 @@ a.button {
   white-space: nowrap;
 }
 
+/* Prominent warning banner, e.g. the simulated-data notice on /demo. */
+.notice {
+  border: 1px solid #8a6d1a;
+  border-radius: 12px;
+  background: #241d0a;
+  color: #ffd98a;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.notice p {
+  margin: 8px 0 0;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;
