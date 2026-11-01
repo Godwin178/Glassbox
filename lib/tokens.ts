@@ -1,6 +1,10 @@
-import { TOKEN_PROGRAM_ID } from "@solana/web3.js";
-import type { Connection, PublicKey } from "@solana/web3.js";
-import type { TokenBalance } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
+import type { Connection, TokenBalance } from "@solana/web3.js";
+
+/** SPL Token program (not exported by @solana/web3.js 1.x). */
+export const TOKEN_PROGRAM_ID = new PublicKey(
+  "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+);
 
 export interface TokenHolding {
   account: string;
@@ -125,7 +129,7 @@ export function summarizeTokenBalanceChanges(
 
 /** Adapts the raw token balances of a parsed transaction for the summarizer. */
 export function toTokenBalanceEntries(
-  balances: TokenBalance[] | undefined
+  balances: TokenBalance[] | null | undefined
 ): TokenBalanceEntry[] {
   return (balances ?? []).map((entry) => ({
     mint: entry.mint,
