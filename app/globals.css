@@ -57,6 +57,11 @@ input {
   cursor: pointer;
 }
 
+a.button {
+  display: inline-block;
+  text-decoration: none;
+}
+
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;

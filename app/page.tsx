@@ -169,6 +169,16 @@ function WalletInspector() {
             </div>
           </div>
 
+          <p>
+            <a
+              className="button"
+              href={`/api/reports/wallet/${result.address}`}
+              download
+            >
+              Download report (JSON)
+            </a>
+          </p>
+
           {result.tokens.length ? (
             <table className="data-table">
               <thead>
@@ -442,6 +452,12 @@ function FundingPanel() {
             <p className="muted">
               {funding.transactionsAnalyzed} recent transactions analyzed from{" "}
               <span className="mono">{funding.wallet}</span>
+            </p>
+
+            <p>
+              <a className="button" href="/api/reports/funding" download>
+                Download funding report (CSV)
+              </a>
             </p>
 
             {funding.records?.length ? (

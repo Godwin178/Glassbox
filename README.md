@@ -14,6 +14,7 @@ To make blockchain transparency accessible through clear, verifiable information
 - **Transaction verification** — confirmation status, fee, slot, per-account SOL movements and per-mint token movements for any transaction.
 - **Token transparency** — every SPL token account (mint, decimals, balance) held by a wallet.
 - **Public funding transparency** — a live on-chain summary of a public funding wallet: total received, total spent and current balance, with per-transaction records.
+- **Downloadable reports** — one-click JSON wallet reports and CSV funding reports straight from the live blockchain data.
 - **Milestone & proposal tracking** — published through versioned JSON data files in this repository, so every change is auditable in git history.
 
 ## Technology
@@ -54,6 +55,8 @@ Glassbox never requests private keys or seed phrases and performs read-only bloc
 | `GET /api/transaction/{signature}` | Full parsed transaction: status, fee, SOL and token movements. |
 | `GET /api/tokens/{address}` | SPL token holdings of a wallet (up to 500 accounts). |
 | `GET /api/funding` | On-chain funding summary for `GLASSBOX_FUNDING_WALLET`. |
+| `GET /api/reports/wallet/{address}` | Downloadable JSON wallet report (balance, tokens, recent transactions). |
+| `GET /api/reports/funding` | Downloadable CSV funding report for `GLASSBOX_FUNDING_WALLET`. |
 | `GET /api/milestones` | Published project milestones (from `data/milestones.json`). |
 | `GET /api/proposals` | Published community proposals (from `data/proposals.json`). |
 
@@ -69,7 +72,7 @@ npm run lint       # Next.js lint
 
 ## Testing
 
-Unit tests cover the pure core logic (address/signature validation, token balance change summarization, funding summaries) in `tests/`. GitHub Actions runs type checking, tests and the production build on every push and pull request.
+Unit tests cover the pure core logic (address/signature validation, token balance change summarization, funding summaries and CSV report rendering) in `tests/`. GitHub Actions runs type checking, tests and the production build on every push and pull request.
 
 ## Security
 

@@ -1,3 +1,70 @@
+import { PublicKey } from "@solana/web3.js";
+import type { Connection, ParsedTransactionWithMeta } from "@solana/web3.js";
+
+const TRANSACTION_BATCH_SIZE = 25;
+const MAX_TRANSACTIONS = 500;
+
+/**
+ * Reads the funding wallet's balance and recent on-chain activity from
+ * the Solana network, producing the raw per-transaction inputs that
+ * summarizeFunding turns into a transparency summary.
+ */
+export async function gatherFundingInputs(
+  connection: Connection,
+  wallet: PublicKey
+): Promise<{
+  balanceLamports: number;
+  inputs: FundingTransactionLike[];
+}> {
+  const [balance, signatures] = await Promise.all([
+    connection.getBalance(wallet),
+    connection.getSignaturesForAddress(wallet, {
+      limit: MAX_TRANSACTIONS,
+    }),
+  ]);
+
+  const successful = signatures.filter((entry) => !entry.err);
+  const inputs: FundingTransactionLike[] = [];
+
+  for (let i = 0; i < successful.length; i += TRANSACTION_BATCH_SIZE) {
+    const batch = successful
+      .slice(i, i + TRANSACTION_BATCH_SIZE)
+      .map((entry) => entry.signature);
+
+    const parsedBatch: (ParsedTransactionWithMeta | null)[] =
+      await connection.getParsedTransactions(batch, {
+        maxSupportedTransactionVersion: 0,
+        commitment: "confirmed",
+      });
+
+    for (const tx of parsedBatch) {
+      if (!tx || !tx.meta) {
+        continue;
+      }
+
+      const keys = tx.transaction.message.accountKeys;
+      const walletIndex = keys.findIndex((key) =>
+        key.pubkey.equals(wallet)
+      );
+
+      if (walletIndex === -1) {
+        continue;
+      }
+
+      inputs.push({
+        signature: tx.transaction.signatures[0] ?? "",
+        slot: tx.slot,
+        blockTime: tx.blockTime ?? null,
+        fee: tx.meta.fee,
+        walletIndex,
+        preBalance: tx.meta.preBalances[walletIndex] ?? 0,
+        postBalance: tx.meta.postBalances[walletIndex] ?? 0,
+      });
+    }
+  }
+
+  return { balanceLamports: balance, inputs };
+}
 export interface FundingTransactionLike {
   signature: string;
   slot: number;
