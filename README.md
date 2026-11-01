@@ -58,7 +58,7 @@ Milestones and community proposals are published as versioned JSON records, so e
       "title": "Milestone 1: wallet inspection",
       "description": "Shipped balance and token views.",
       "status": "complete",
-      "dueDate": "2026-Q1"
+      "dueDate": "Q1 2026"
     }
   ]
 }
@@ -99,12 +99,26 @@ Glassbox will never ask users for private keys or wallet seed phrases. Only publ
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide. In short: fork the repository, create a feature branch, run `npm run lint`, `npm run typecheck`, `npm test` and `npm run build` locally, then open a pull request against `main`. GitHub Actions verifies every pull request.
 
 ## Project Status
 
-Wallet inspection, transaction verification, token transparency and funding transparency are implemented, with published milestones. Community proposals are tracked but no records have been submitted yet — open a pull request to publish one.
+**Completed capabilities:**
+
+- **Wallet inspection** — balance, SPL token holdings and recent activity for any Solana wallet, read live from the blockchain.
+- **Transaction verification** — confirmation status, fee, slot, per-account SOL movements and per-mint token movements.
+- **Token transparency** — every SPL token account (mint, decimals, balance) held by a wallet.
+- **Public funding transparency** — live on-chain funding wallet summary with per-transaction records.
+- **Downloadable reports** — one-click JSON wallet reports and CSV funding reports.
+- **Milestone & proposal tracking** — published through versioned JSON data files and rendered on the dashboard.
+
+**Planned development (not yet implemented):**
+
+- **Community proposal registry** — the tracking mechanism works, but no proposals have been submitted yet; publish one via a pull request.
+- **RPC reliability** — dedicated RPC provider support and response caching to shield the dashboard from public endpoint rate limits are not implemented yet.
+
+The authoritative, versioned roadmap lives in [data/milestones.json](data/milestones.json), rendered live on the dashboard's Milestones section.
 
 ## License
 
-MIT
+Glassbox is released under the [MIT License](LICENSE).
