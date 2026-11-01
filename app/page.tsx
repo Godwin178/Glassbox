@@ -580,7 +580,8 @@ function FundingPanel() {
               </table>
             ) : (
               <p className="muted">
-                No funding transactions found for this wallet yet.
+                No funding transactions recorded yet. Glassbox is ready to
+                publish and audit future contributions.
               </p>
             )}
           </>
@@ -617,6 +618,16 @@ function formatStatus(status?: string): string {
     return "—";
   }
   return STATUS_LABELS[status] ?? status;
+}
+
+/**
+ * Completed milestones point to auditable git history; planned
+ * milestones have no confirmed schedule yet, so none is invented.
+ */
+function scheduleEvidence(milestone: MilestoneEntry): string {
+  return milestone.status === "complete"
+    ? "See Git history"
+    : "To be scheduled";
 }
 
 function MilestonesPanel() {
@@ -680,7 +691,7 @@ function MilestonesPanel() {
                 <tr>
                   <th>Milestone</th>
                   <th>Status</th>
-                  <th>Target date</th>
+                  <th>Schedule / evidence</th>
                 </tr>
               </thead>
               <tbody>
@@ -695,7 +706,9 @@ function MilestonesPanel() {
                     <td className="nowrap">
                       {formatStatus(milestone.status)}
                     </td>
-                    <td className="nowrap">{milestone.dueDate ?? "—"}</td>
+                    <td className="nowrap">
+                      {scheduleEvidence(milestone)}
+                    </td>
                   </tr>
                 ))}
               </tbody>

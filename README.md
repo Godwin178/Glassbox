@@ -57,14 +57,13 @@ Milestones and community proposals are published as versioned JSON records, so e
     {
       "title": "Milestone 1: wallet inspection",
       "description": "Shipped balance and token views.",
-      "status": "complete",
-      "dueDate": "Q1 2026"
+      "status": "complete"
     }
   ]
 }
 ```
 
-`title` is required; `description`, `status` and `dueDate` are optional. The dashboard reads these files live, and unit tests guard the record schema.
+`title` is required; `description` and `status` are optional. The dashboard shows "See Git history" for completed milestones and "To be scheduled" for planned ones, so no dates need to be invented. The dashboard reads these files live, and unit tests guard the record schema.
 
 ## API
 

@@ -3,38 +3,32 @@
     {
       "title": "Milestone 1: wallet inspection",
       "description": "Balance, SPL token holdings and recent activity for any Solana wallet, read live from the blockchain.",
-      "status": "complete",
-      "dueDate": "Q1 2026"
+      "status": "complete"
     },
     {
       "title": "Milestone 2: transaction verification",
       "description": "Confirmation status, fee, slot, per-account SOL movements and per-mint token movements for any transaction.",
-      "status": "complete",
-      "dueDate": "Q1 2026"
+      "status": "complete"
     },
     {
       "title": "Milestone 3: funding transparency and downloadable reports",
       "description": "On-chain funding wallet summary plus one-click JSON wallet and CSV funding reports.",
-      "status": "complete",
-      "dueDate": "Q1 2026"
+      "status": "complete"
     },
     {
       "title": "Milestone 4: dashboard refinements",
       "description": "Mobile-responsive dashboard layout, funding wallet explorer link, lint tooling and published milestones.",
-      "status": "complete",
-      "dueDate": "Q2 2026"
+      "status": "complete"
     },
     {
       "title": "Milestone 5: community proposal registry",
       "description": "Publish the first community proposals through reviewed pull requests to the proposals data file.",
-      "status": "planned",
-      "dueDate": "Q2 2026"
+      "status": "planned"
     },
     {
       "title": "Milestone 6: RPC reliability",
       "description": "Support dedicated RPC providers and cache responses so public endpoint rate limits do not degrade the dashboard.",
-      "status": "planned",
-      "dueDate": "Q3 2026"
+      "status": "planned"
     }
   ]
 }
