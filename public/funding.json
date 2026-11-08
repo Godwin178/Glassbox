@@ -1,0 +1,58 @@
+
+{
+  "$schema": "https://fundingjson.org/schema/v1.1.0.json",
+  "version": "v1.1.0",
+  "entity": {
+    "type": "group",
+    "role": "steward",
+    "name": "Glassbox Project Team",
+    "email": "okhikugodwin123@gmail.com",
+    "description": "The team stewarding Glassbox, an independent open-source Solana transparency and accountability toolkit.",
+    "webpageUrl": {
+      "url": "https://github.com/Godwin178/Glassbox"
+    }
+  },
+  "projects": [
+    {
+      "guid": "glassbox-solana",
+      "name": "Glassbox",
+      "description": "An open-source Solana transparency and accountability toolkit for wallet inspection, transaction verification, funding transparency, downloadable reports, and auditable project records. Seeking $15,000 in one-time public-good support for development, security, infrastructure, documentation, and community testing. Glassbox has no token.",
+      "webpageUrl": {
+        "url": "https://glassbox-opensource.vercel.app"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/Godwin178/Glassbox"
+      },
+      "licenses": ["spdx:MIT"],
+      "tags": [
+        "solana",
+        "open-source",
+        "transparency",
+        "accountability",
+        "public-goods"
+      ]
+    }
+  ],
+  "funding": {
+    "channels": [
+      {
+        "guid": "project-email",
+        "type": "other",
+        "address": "okhikugodwin123@gmail.com",
+        "description": "Contact the project team to discuss grants and secure funding arrangements."
+      }
+    ],
+    "plans": [
+      {
+        "guid": "glassbox-public-good-support",
+        "status": "active",
+        "name": "Glassbox open-source development grant",
+        "description": "One-time $15,000 funding request for open-source development, security, infrastructure, documentation, and community testing.",
+        "amount": 15000,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": ["project-email"]
+      }
+    ]
+  }
+}
