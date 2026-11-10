@@ -26,13 +26,15 @@
     },
     {
       "title": "Milestone 5: community proposal registry",
-      "description": "Publish the first community proposals through reviewed pull requests to the proposals data file.",
-      "status": "planned"
+      "description": "Publish a public registry for community proposals, with submissions, review status and discussion linked to the project's auditable records.",
+      "status": "planned",
+      "dueDate": "2026-12"
     },
     {
       "title": "Milestone 6: RPC reliability",
-      "description": "Support dedicated RPC providers and cache responses so public endpoint rate limits do not degrade the dashboard.",
-      "status": "planned"
+      "description": "Improve RPC reliability through dedicated provider support and response caching so public endpoint rate limits are less likely to degrade the dashboard.",
+      "status": "planned",
+      "dueDate": "2027-01"
     }
   ]
 }
