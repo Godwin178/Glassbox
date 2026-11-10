@@ -944,6 +944,7 @@ export default function Home() {
           <a href="#funding">Funding</a>
           <a href="#milestones">Milestones</a>
           <a href="/demo">Funding demo</a>
+          <a href="/methodology">Verification methodology</a>
         </nav>
       </header>
 
