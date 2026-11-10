@@ -614,6 +614,25 @@ interface ProposalEntry {
   status?: string;
 }
 
+interface PublicProposalIssue {
+  number: number;
+  title: string;
+  html_url: string;
+  state: "open" | "closed";
+  comments: number;
+  created_at: string;
+  labels: { name: string }[];
+}
+
+function publicProposalStatus(issue: PublicProposalIssue): string {
+  const labels = issue.labels.map((label) => label.name.toLowerCase());
+  if (labels.some((label) => label.includes("rejected"))) return "Not accepted";
+  if (labels.some((label) => label.includes("accepted") || label.includes("approved"))) return "Accepted";
+  if (labels.some((label) => label.includes("in progress"))) return "In progress";
+  if (labels.some((label) => label.includes("review"))) return "Under review";
+  return issue.state === "closed" ? "Closed" : "Open for discussion";
+}
+
 const STATUS_LABELS: Record<string, string> = {
   complete: "Complete",
   "in-progress": "In progress",
@@ -646,6 +665,9 @@ function MilestonesPanel() {
   const [proposalTitle, setProposalTitle] = useState("");
   const [proposalDescription, setProposalDescription] = useState("");
   const [proposalError, setProposalError] = useState<string | null>(null);
+  const [publicIssues, setPublicIssues] = useState<PublicProposalIssue[]>([]);
+  const [publicIssuesLoading, setPublicIssuesLoading] = useState(true);
+  const [publicIssuesError, setPublicIssuesError] = useState<string | null>(null);
 
   const submitProposal = useCallback((event: FormEvent) => {
     event.preventDefault();
@@ -673,6 +695,28 @@ function MilestonesPanel() {
   }, [proposalTitle, proposalDescription]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetch("https://api.github.com/repos/Godwin178/Glassbox/issues?state=all&per_page=50&sort=created&direction=desc", {
+      headers: { Accept: "application/vnd.github+json" },
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("GitHub proposal list is temporarily unavailable.");
+        return response.json() as Promise<(PublicProposalIssue & { pull_request?: unknown })[]>;
+      })
+      .then((items) => {
+        if (!active) return;
+        setPublicIssues(items.filter((item) => !item.pull_request && item.title.startsWith("[Community proposal]")));
+      })
+      .catch((requestError) => {
+        if (active) setPublicIssuesError(requestError instanceof Error ? requestError.message : "Could not load public proposals.");
+      })
+      .finally(() => {
+        if (active) setPublicIssuesLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -788,6 +832,41 @@ function MilestonesPanel() {
             </p>
           )}
 
+          <h3>Public review &amp; discussion</h3>
+          <p className="muted">
+            Community proposals are listed from the public Glassbox GitHub issue tracker.
+            Their discussion and comments remain publicly accessible; maintainers decide whether a proposal is accepted.
+          </p>
+          {publicIssuesLoading ? <p className="muted">Loading public proposals…</p> : null}
+          {publicIssuesError ? <p className="error">{publicIssuesError} <a href="https://github.com/Godwin178/Glassbox/issues" target="_blank" rel="noopener noreferrer">View GitHub discussions</a>.</p> : null}
+          {!publicIssuesLoading && !publicIssuesError ? (
+            publicIssues.length ? (
+              <table className="data-table">
+                <thead><tr><th>Proposal</th><th>Review status</th><th>Discussion</th></tr></thead>
+                <tbody>
+                  {publicIssues.map((issue) => (
+                    <tr key={issue.number}>
+                      <td>
+                        <a href={issue.html_url} target="_blank" rel="noopener noreferrer">
+                          <strong>{issue.title.replace("[Community proposal]", "").trim()}</strong>
+                        </a>
+                        <div className="muted">#{issue.number} · {new Date(issue.created_at).toLocaleDateString()}</div>
+                      </td>
+                      <td className="nowrap">{publicProposalStatus(issue)}</td>
+                      <td className="nowrap">
+                        <a href={issue.html_url} target="_blank" rel="noopener noreferrer">
+                          View {issue.comments} comments
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="muted">No public community proposals have been submitted yet. New submissions will appear here after they are opened on GitHub.</p>
+            )
+          ) : null}
+
           <h3>Submit a community proposal</h3>
           <p className="muted">
             Share an improvement, feature request, or ecosystem idea. Submitting
@@ -834,7 +913,7 @@ const features = [
   "Transaction verification — status, fees, balance and token movements",
   "Token and liquidity transparency — SPL holdings of any wallet",
   "Public funding transparency — on-chain funding wallet summaries",
-  "Milestone and proposal tracking — published via versioned data files",
+  "Milestone tracking and public community proposal review",
 ];
 
 export default function Home() {
