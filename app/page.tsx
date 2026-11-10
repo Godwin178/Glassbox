@@ -643,6 +643,34 @@ function scheduleEvidence(milestone: MilestoneEntry): string {
 function MilestonesPanel() {
   const [milestones, setMilestones] = useState<MilestoneEntry[]>([]);
   const [proposals, setProposals] = useState<ProposalEntry[]>([]);
+  const [proposalTitle, setProposalTitle] = useState("");
+  const [proposalDescription, setProposalDescription] = useState("");
+  const [proposalError, setProposalError] = useState<string | null>(null);
+
+  const submitProposal = useCallback((event: FormEvent) => {
+    event.preventDefault();
+    const title = proposalTitle.trim();
+    const description = proposalDescription.trim();
+
+    if (title.length < 5 || description.length < 20) {
+      setProposalError("Add a title (at least 5 characters) and details (at least 20 characters).");
+      return;
+    }
+
+    const body = [
+      "## Community proposal",
+      "",
+      description,
+      "",
+      "---",
+      "Submitted through the Glassbox website. Please review and discuss before any implementation.",
+    ].join("\\n");
+    const url = new URL("https://github.com/Godwin178/Glassbox/issues/new");
+    url.searchParams.set("title", "[Community proposal] " + title);
+    url.searchParams.set("body", body);
+    window.open(url.toString(), "_blank", "noopener,noreferrer");
+    setProposalError(null);
+  }, [proposalTitle, proposalDescription]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -755,11 +783,46 @@ function MilestonesPanel() {
             </table>
           ) : (
             <p className="muted">
-              No community proposals have been submitted yet. Open a pull
-              request to publish one.
+              No community proposals have been published in the registry yet.
+              You can submit an idea below for public review.
             </p>
           )}
-        </>
+
+          <h3>Submit a community proposal</h3>
+          <p className="muted">
+            Share an improvement, feature request, or ecosystem idea. Submitting
+            opens a public GitHub issue so the community can review and discuss it.
+            Your proposal is not automatically approved or added to the milestone registry.
+          </p>
+          <form onSubmit={submitProposal}>
+            <label htmlFor="proposal-title">Proposal title</label>
+            <input
+              id="proposal-title"
+              className="input"
+              value={proposalTitle}
+              onChange={(event) => setProposalTitle(event.target.value)}
+              maxLength={120}
+              placeholder="What would you like Glassbox to improve?"
+              required
+            />
+            <label htmlFor="proposal-description">Proposal details</label>
+            <textarea
+              id="proposal-description"
+              className="input"
+              value={proposalDescription}
+              onChange={(event) => setProposalDescription(event.target.value)}
+              rows={5}
+              maxLength={5000}
+              placeholder="Explain the problem, your suggested change, and who it helps."
+              required
+            />
+            {proposalError ? <p className="error">{proposalError}</p> : null}
+            <p>
+              <button className="button" type="submit">
+                Continue to public proposal
+              </button>
+            </p>
+          </form>
       ) : null}
     </section>
   );
