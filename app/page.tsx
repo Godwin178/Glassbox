@@ -502,7 +502,11 @@ function FundingPanel() {
           <>
             <div className="stat-grid">
               <div className="stat">
-                <div className="muted">Received</div>
+                <div className="muted">Grant funding target</div>
+                <div className="stat-value">$45,000 USD</div>
+              </div>
+              <div className="stat">
+                <div className="muted">Received on-chain</div>
                 <div className="stat-value">
                   {formatNumber(funding.totalReceivedSOL ?? 0)} SOL
                 </div>
@@ -546,6 +550,15 @@ function FundingPanel() {
               <a className="button" href="/api/reports/funding" download>
                 Download funding report (CSV)
               </a>
+              {" "}
+              <a className="button" href="/api/reports/funding?format=json" download>
+                Download funding report (JSON)
+              </a>
+            </p>
+            <p className="muted">
+              The $45,000 figure is the requested grant target. On-chain totals are
+              shown in SOL and are not converted into USD, so no misleading
+              fundraising percentage is displayed.
             </p>
 
             {funding.records?.length ? (
