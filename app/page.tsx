@@ -522,9 +522,9 @@ function FundingPanel() {
             </div>
 
             <p className="muted">
-              {funding.transactionsAnalyzed} recent{" "}
+              {funding.transactionsAnalyzed} recent wallet{" "}
               {funding.transactionsAnalyzed === 1 ? "transaction" : "transactions"}{" "}
-              analyzed from the funding wallet{" "}
+              analyzed. This is an activity count, not a donation count.{" "}
               <a
                 className="mono"
                 href={`${EXPLORER}/address/${funding.wallet}`}
@@ -533,6 +533,13 @@ function FundingPanel() {
               >
                 {funding.wallet}
               </a>
+            </p>
+            <p className="muted">
+              “Received” counts incoming SOL transfers identified in the
+              analyzed transactions. The activity count can include other
+              wallet transactions; it does not mean donations were received.
+              The current balance is the wallet balance at the time of this
+              check.
             </p>
 
             <p>
