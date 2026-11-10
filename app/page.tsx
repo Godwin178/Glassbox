@@ -823,6 +823,7 @@ function MilestonesPanel() {
               </button>
             </p>
           </form>
+        </>
       ) : null}
     </section>
   );
