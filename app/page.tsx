@@ -580,8 +580,9 @@ function FundingPanel() {
               </table>
             ) : (
               <p className="muted">
-                No funding transactions recorded yet. Glassbox is ready to
-                publish and audit future contributions.
+                No funding transactions have been recorded for this wallet yet.
+                The $45,000 grant request is a funding target, not money received.
+                Anyone can verify this wallet's activity on Solana Explorer.
               </p>
             )}
           </>
