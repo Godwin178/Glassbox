@@ -8,6 +8,20 @@ Glassbox is an independent, open-source project designed to make Solana blockcha
 
 To make blockchain transparency accessible through clear, verifiable information and public accountability tools.
 
+## Public-good funding request
+
+Glassbox is seeking **$45,000 in non-dilutive public-good grant support over six months**. The request is separate from contributions received: funding received is reported independently through the public on-chain funding panel and downloadable reports.
+
+| Grant milestone | Requested amount |
+| --- | ---: |
+| RPC reliability, dedicated providers and caching | $10,000 |
+| Community proposal registry | $7,500 |
+| Security review and remediation | $7,500 |
+| Pilot adoption with five Solana projects | $10,000 |
+| Adoption reporting and six-month maintenance runway | $10,000 |
+| **Total** | **$45,000** |
+
+
 ## Features
 
 - **Wallet inspection** — balance, SPL token holdings and recent activity for any Solana wallet, read live from the blockchain.
