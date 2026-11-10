@@ -64,7 +64,7 @@ Glassbox never requests private keys or seed phrases and performs read-only bloc
 
 ### Publishing milestones & proposals
 
-Milestones and community proposals are published as versioned JSON records, so every change is auditable in git history. To publish one, open a pull request adding an entry to `data/milestones.json` or `data/proposals.json`:
+Milestones and community proposals are published as versioned JSON records, so every change is auditable in git history. The public roadmap schedules the community proposal registry for December 2026 and RPC reliability improvements for January 2027. To publish a milestone or proposal record, open a pull request adding an entry to `data/milestones.json` or `data/proposals.json`:
 
 ```json
 {
@@ -78,7 +78,11 @@ Milestones and community proposals are published as versioned JSON records, so e
 }
 ```
 
-`title` is required; `description`, `status` and `dueDate` are optional. A completed milestone may carry a `dueDate` in `YYYY-MM` format — but only the month of the feature's actual implementation commit in git history, which the dashboard shows as evidence. Planned milestones display "To be scheduled" instead of an invented date. The dashboard reads these files live, and unit tests guard the record schema.
+`title` is required; `description`, `status` and `dueDate` are optional. A completed milestone may carry a `dueDate` in `YYYY-MM` format, reflecting the month of its implementation commit in git history. Planned milestones may carry an explicitly approved target month; that date is a target, not evidence of completion. The dashboard displays the published status and schedule. The dashboard reads these files live, and unit tests guard the record schema.
+
+## Verification methodology
+
+See the public [Verification & Methodology page](https://glassbox-opensource.vercel.app/methodology) for data sources, verification approach, funding-report definitions, limitations and the project audit trail.
 
 ## API
 
