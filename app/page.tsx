@@ -582,7 +582,7 @@ function FundingPanel() {
               <p className="muted">
                 No funding transactions have been recorded for this wallet yet.
                 The $45,000 grant request is a funding target, not money received.
-                Anyone can verify this wallet&apos;s activity on Solana Explorer.
+                Anyone can verify activity from this wallet on Solana Explorer.
               </p>
             )}
           </>
