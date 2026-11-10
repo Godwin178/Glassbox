@@ -551,7 +551,7 @@ function FundingPanel() {
                 Download funding report (CSV)
               </a>
               {" "}
-              <a className="button" href="/api/reports/funding?format=json" download>
+              <a className="button" href="/api/reports/funding-json" download>
                 Download funding report (JSON)
               </a>
             </p>
