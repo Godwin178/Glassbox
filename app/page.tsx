@@ -362,7 +362,7 @@ function FeaturedTreasuries() {
       <div className="stat">
         <h3>MetaDAO</h3>
         <p className="muted">
-          View MetaDAO's own public transparency dashboard:
+          View MetaDAO&apos;s own public transparency dashboard:
           {" "}<a href="https://metadao.fi/transparency" target="_blank" rel="noopener noreferrer">MetaDAO transparency</a>.
           Glassbox does not currently have a separate MetaDAO wallet address configured.
         </p>
