@@ -50,3 +50,16 @@ Milestones and community proposals are published as versioned JSON records, so e
 Glassbox aims to make Solana blockchain activity, funding, expenses, and project milestones easier to inspect and verify.
 
 Thank you for helping build transparent open-source tools.
+
+
+## Review and maintainer decisions
+
+Every pull request and community proposal requires maintainer review. Opening an issue or pull request is a request for consideration, not approval, acceptance, a promise to implement, or a scheduled milestone. A maintainer may request changes, accept, or close a contribution. Only an explicitly approved and merged pull request changes the codebase. Proposal status in the public registry is updated by maintainers after a decision.
+
+## Public wallet examples
+
+When proposing a public wallet for the treasury examples, include a public source for the address and explain why it is relevant. Listing an address does not prove ownership, control, or affiliation with the named project.
+
+## Demo data
+
+All simulated demo data must remain clearly labelled as simulated and must never be mixed into live on-chain funding totals.
