@@ -64,7 +64,7 @@ Glassbox never requests private keys or seed phrases and performs read-only bloc
 
 ### Publishing milestones & proposals
 
-Milestones and community proposals are published as versioned JSON records, so every change is auditable in git history. The public roadmap schedules the community proposal registry for December 2026 and RPC reliability improvements for January 2027. To publish a milestone or proposal record, open a pull request adding an entry to `data/milestones.json` or `data/proposals.json`:
+Milestones and community proposals are published as versioned JSON records, so every change is auditable in git history. The public proposal page currently accepts submissions as GitHub issues and displays public discussion and review status. This is not yet a pull-request-based proposal workflow, and submissions are not automatically added to `data/proposals.json`. Maintainers can update the versioned milestone and proposal records through pull requests to `data/milestones.json` or `data/proposals.json`:
 
 ```json
 {
@@ -131,9 +131,12 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the ful
 - **Milestone & proposal tracking** — published through versioned JSON data files and rendered on the dashboard.
 - **Funding demo** — a simulated-data walkthrough page at `/demo`, clearly separated from live wallet data.
 
+**In progress:**
+
+- **Community proposal registry** — the public submission page, GitHub issue creation flow, and public discussion/review display are live. Pull-request-based submission and automatic inclusion in the versioned proposal registry are not implemented yet.
+
 **Planned development (not yet implemented):**
 
-- **Community proposal registry** — the tracking mechanism works, but no proposals have been submitted yet; publish one via a pull request.
 - **RPC reliability** — dedicated RPC provider support and response caching to shield the dashboard from public endpoint rate limits are not implemented yet.
 
 The authoritative, versioned roadmap lives in [data/milestones.json](data/milestones.json), rendered live on the dashboard's Milestones section.
