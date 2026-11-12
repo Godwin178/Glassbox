@@ -273,22 +273,46 @@ function WalletInspector() {
 
 const FEATURED_TREASURIES = [
   {
-    name: "Marinade Labs Treasury",
+    name: "Marinade Council Budget (Labs Treasury)",
     address: "J5BEceL5z1EQ7JBqEFu4BfPN4PYCeQaW3GXrzXFfCzhs",
+    role: "DAO-authorized budget used by Marinade Labs",
     source: "https://docs.marinade.finance/the-mnde-token/",
     sourceLabel: "Marinade official documentation — Labs Treasury address",
   },
   {
-    name: "MetaDAO",
-    address: "6awyHMshBGVjJ3ozdSJdyyDE1CTAXUwrpNMaRGMsb4sf",
-    source: "https://metadao.fi/transparency",
-    sourceLabel: "MetaDAO public transparency dashboard",
+    name: "Marinade DAO Reserve Treasury",
+    address: "B56RWQGf9RFw7t8gxPzrRvk5VRmB5DoF94aLoJ25YtvG",
+    role: "DAO reserve treasury",
+    source: "https://docs.marinade.finance/the-mnde-token/",
+    sourceLabel: "Marinade official documentation — DAO Treasury address",
   },
   {
-    name: "Marinade DAO",
-    address: "B56RWQGf9RFw7t8gxPzrRvk5VRmB5DoF94aLoJ25YtvG",
-    source: "https://docs.marinade.finance/the-mnde-token/",
-    sourceLabel: "Marinade documentation — DAO treasury address",
+    name: "Marinade DAO Operations Wallet",
+    address: "89SrbjbuNyqSqAALKBsKBqMSh463eLvzS4iVWCeArBgB",
+    role: "Operational wallet for protocol fees and expenses",
+    source: "https://app.marinade.finance/learn/marinade-q3-2026-quarterly-report/",
+    sourceLabel: "Marinade Q3 2026 quarterly report — account-level disclosure",
+  },
+  {
+    name: "Marinade MIP-22 Buyback Wallet",
+    address: "BBaQsiRoZz7u4o2mLz7a1b6n8m4w6q5u7x9y2z3a4b5c",
+    role: "MNDE buyback accumulation wallet (reported Q3 2026)",
+    source: "https://app.marinade.finance/learn/marinade-q3-2026-quarterly-report/",
+    sourceLabel: "Marinade Q3 2026 quarterly report — account-level disclosure",
+  },
+  {
+    name: "Marinade DAO-funded Governance Wallet",
+    address: "CMbdJVZx2FkP7",
+    role: "Wallet funded from operations and used for MNDE governance staking",
+    source: "https://app.marinade.finance/learn/marinade-q3-2026-quarterly-report/",
+    sourceLabel: "Marinade Q3 2026 quarterly report — account-level disclosure",
+  },
+  {
+    name: "MetaDAO",
+    address: "6awyHMshBGVjJ3ozdSJdyyDE1CTAXUwrpNMaRGMsb4sf",
+    role: "Community-added public example",
+    source: "https://metadao.fi/transparency",
+    sourceLabel: "MetaDAO public transparency dashboard",
   },
 ];
 
@@ -326,8 +350,9 @@ function FeaturedTreasuries() {
       <h2>Public Solana treasury wallets</h2>
       <p className="muted">
         Live, read-only on-chain information for selected public wallet addresses.
-        These listings are community-added examples; Glassbox does not claim affiliation
-        or official verification by the named projects.
+        Marinade-related addresses are listed separately based on their published roles;
+        Glassbox does not combine their balances into one treasury total. These are
+        community-added examples, not an affiliation or endorsement claim.
       </p>
       <div className="stat-grid">
         {FEATURED_TREASURIES.map((item) => {
@@ -335,6 +360,7 @@ function FeaturedTreasuries() {
           return (
             <div className="stat" key={item.address}>
               <h3>{item.name}</h3>
+              {item.role ? <p className="muted">{item.role}</p> : null}
               <p className="mono">
                 <a href={`${EXPLORER}/address/${item.address}`} target="_blank" rel="noopener noreferrer">
                   {item.address}
