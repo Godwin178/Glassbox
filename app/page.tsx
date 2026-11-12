@@ -294,6 +294,13 @@ const FEATURED_TREASURIES = [
     sourceLabel: "Marinade Q3 2026 quarterly report — account-level disclosure",
   },
   {
+    name: "Marinade MIP-22 Buyback Wallet",
+    address: "BBaQsiRo744NAYaqL3nKRfgeJayoqVicEQsEnLpfsJ6x",
+    role: "MNDE buybacks accumulated for quarterly distribution",
+    source: "https://docs.marinade.finance/the-mnde-token/",
+    sourceLabel: "Marinade official documentation — MIP-22 buyback wallet",
+  },
+  {
     name: "MetaDAO",
     address: "6awyHMshBGVjJ3ozdSJdyyDE1CTAXUwrpNMaRGMsb4sf",
     role: "Community-added public example",
