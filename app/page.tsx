@@ -273,10 +273,10 @@ function WalletInspector() {
 
 const FEATURED_TREASURIES = [
   {
-    name: "Jupiter Community Cold Wallet",
-    address: "EXJHiMkj6NRFDfhWBMKccHNwdSpCT7tdvQeRf87yHmT6",
-    source: "https://explorer.solana.com/address/EXJHiMkj6NRFDfhWBMKccHNwdSpCT7tdvQeRf87yHmT6",
-    sourceLabel: "Public Solana Explorer address record",
+    name: "Marinade Labs Treasury",
+    address: "J5BEceL5z1EQ7JBqEFu4BfPN4PYCeQaW3GXrzXFfCzhs",
+    source: "https://docs.marinade.finance/the-mnde-token/",
+    sourceLabel: "Marinade official documentation — Labs Treasury address",
   },
   {
     name: "MetaDAO",
