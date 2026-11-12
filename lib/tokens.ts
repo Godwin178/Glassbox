@@ -5,12 +5,16 @@ import type { Connection, TokenBalance } from "@solana/web3.js";
 export const TOKEN_PROGRAM_ID = new PublicKey(
   "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
 );
+export const TOKEN_2022_PROGRAM_ID = new PublicKey(
+  "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+);
 
 export interface TokenHolding {
   account: string;
   mint: string;
   decimals: number | null;
   uiAmount: number | null;
+  tokenProgram: string;
 }
 
 interface SplTokenAccountInfo {
@@ -30,14 +34,19 @@ export async function fetchTokenHoldings(
   owner: PublicKey,
   limit = 50
 ): Promise<TokenHolding[]> {
-  const response = await connection.getParsedTokenAccountsByOwner(owner, {
-    programId: TOKEN_PROGRAM_ID,
-  });
+  const responses = await Promise.all([
+    connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID }),
+    connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_2022_PROGRAM_ID }),
+  ]);
+  const accounts = responses.flatMap((response) => response.value);
 
-  return response.value.slice(0, limit).flatMap((account) => {
+  return accounts.slice(0, limit).flatMap((account) => {
     const data = account.account.data;
 
-    if (!("parsed" in data) || data.program !== "spl-token") {
+    if (
+      !("parsed" in data) ||
+      (data.program !== "spl-token" && data.program !== "spl-token-2022")
+    ) {
       return [];
     }
 
@@ -53,6 +62,7 @@ export async function fetchTokenHoldings(
         mint: info.mint,
         decimals: info.tokenAmount?.decimals ?? null,
         uiAmount: info.tokenAmount?.uiAmount ?? null,
+        tokenProgram: data.program,
       },
     ];
   });
