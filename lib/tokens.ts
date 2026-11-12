@@ -26,21 +26,23 @@ interface SplTokenAccountInfo {
 }
 
 /**
- * Reads the SPL token accounts owned by a wallet, so the transparency
- * UI can show every token a treasury or grant wallet holds.
+ * Reads token accounts controlled by a wallet and also checks whether the
+ * supplied address is itself a parsed SPL token account (as can happen with
+ * vault addresses). Both forms are included without double-counting.
  */
 export async function fetchTokenHoldings(
   connection: Connection,
   owner: PublicKey,
   limit = 50
 ): Promise<TokenHolding[]> {
-  const responses = await Promise.all([
+  const [splAccounts, token2022Accounts, addressInfo] = await Promise.all([
     connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID }),
     connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_2022_PROGRAM_ID }),
+    connection.getParsedAccountInfo(owner),
   ]);
-  const accounts = responses.flatMap((response) => response.value);
 
-  return accounts.slice(0, limit).flatMap((account) => {
+  const accounts = [...splAccounts.value, ...token2022Accounts.value];
+  const holdings: TokenHolding[] = accounts.flatMap((account) => {
     const data = account.account.data;
 
     if (
@@ -51,21 +53,41 @@ export async function fetchTokenHoldings(
     }
 
     const info = data.parsed as SplTokenAccountInfo;
+    if (!info?.mint) return [];
 
-    if (!info?.mint) {
-      return [];
-    }
+    return [{
+      account: account.pubkey.toBase58(),
+      mint: info.mint,
+      decimals: info.tokenAmount?.decimals ?? null,
+      uiAmount: info.tokenAmount?.uiAmount ?? null,
+      tokenProgram: data.program,
+    }];
+  });
 
-    return [
-      {
-        account: account.pubkey.toBase58(),
+  // Some treasury/vault addresses are token accounts themselves, rather than
+  // wallet authorities that own separate associated token accounts.
+  const addressData = addressInfo.value?.data;
+  if (addressData && "parsed" in addressData) {
+    const program = addressData.program;
+    const info = addressData.parsed as SplTokenAccountInfo;
+    const address = owner.toBase58();
+
+    if (
+      (program === "spl-token" || program === "spl-token-2022") &&
+      info?.mint &&
+      !holdings.some((holding) => holding.account === address)
+    ) {
+      holdings.push({
+        account: address,
         mint: info.mint,
         decimals: info.tokenAmount?.decimals ?? null,
         uiAmount: info.tokenAmount?.uiAmount ?? null,
-        tokenProgram: data.program,
-      },
-    ];
-  });
+        tokenProgram: program,
+      });
+    }
+  }
+
+  return holdings.slice(0, limit);
 }
 
 export interface TokenBalanceEntry {
