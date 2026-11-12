@@ -740,7 +740,7 @@ function FundingPanel() {
 }
 
 function UsagePanel() {
-  const [usage, setUsage] = useState<Record<string, number> | null>(null);
+  const [usage, setUsage] = useState<{ total_wallet_inspections?: number; total_transaction_verifications?: number; today_wallet_inspections?: number; today_transaction_verifications?: number } | null>(null);
 
   useEffect(() => {
     let active = true;
