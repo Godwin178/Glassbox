@@ -275,10 +275,14 @@ const FEATURED_TREASURIES = [
   {
     name: "MetaDAO",
     address: "6awyHMshBGVjJ3ozdSJdyyDE1CTAXUwrpNMaRGMsb4sf",
+    source: "https://metadao.fi/transparency",
+    sourceLabel: "MetaDAO public transparency dashboard",
   },
   {
     name: "Marinade DAO",
     address: "B56RWQGf9RFw7t8gxPzrRvk5VRmB5DoF94aLoJ25YtvG",
+    source: "https://docs.marinade.finance/the-mnde-token/",
+    sourceLabel: "Marinade documentation — DAO treasury address",
   },
 ];
 
@@ -329,6 +333,9 @@ function FeaturedTreasuries() {
                 <a href={`${EXPLORER}/address/${item.address}`} target="_blank" rel="noopener noreferrer">
                   {item.address}
                 </a>
+              </p>
+              <p className="muted">
+                Address source: <a href={item.source} target="_blank" rel="noopener noreferrer">{item.sourceLabel}</a>.
               </p>
               {data ? (
                 <>
@@ -717,9 +724,10 @@ function FundingPanel() {
               </table>
             ) : (
               <p className="muted">
-                No funding transactions have been recorded for this wallet yet.
-                The $45,000 grant request is a funding target, not money received.
-                Anyone can verify activity from this wallet on Solana Explorer.
+                No incoming funding transactions were found in the analyzed
+                wallet history. The live on-chain totals are not seeded with demo
+                data. The $45,000 grant request is a target, not money received.
+                Anyone can independently inspect the wallet on Solana Explorer.
               </p>
             )}
           </>
@@ -816,7 +824,7 @@ function MilestonesPanel() {
       "",
       "---",
       "Submitted through the Glassbox website. Please review and discuss before any implementation.",
-    ].join("\\n");
+    ].join("\n");
     const url = new URL("https://github.com/Godwin178/Glassbox/issues/new");
     url.searchParams.set("title", "[Community proposal] " + title);
     url.searchParams.set("body", body);
