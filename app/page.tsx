@@ -273,8 +273,8 @@ function WalletInspector() {
 
 const FEATURED_TREASURIES = [
   {
-    name: "Jito DAO",
-    address: "5eosrve6LktMZgVNsZYzebgmmC7BjLK8NoWyRQtcmGTF",
+    name: "MetaDAO",
+    address: "6awyHMshBGVjJ3ozdSJdyyDE1CTAXUwrpNMaRGMsb4sf",
   },
   {
     name: "Marinade DAO",
@@ -381,14 +381,6 @@ function FeaturedTreasuries() {
             </div>
           );
         })}
-      </div>
-      <div className="stat">
-        <h3>MetaDAO</h3>
-        <p className="muted">
-          View the MetaDAO public transparency dashboard:
-          {" "}<a href="https://metadao.fi/transparency" target="_blank" rel="noopener noreferrer">MetaDAO transparency</a>.
-          Glassbox does not currently have a separate MetaDAO wallet address configured.
-        </p>
       </div>
     </section>
   );
