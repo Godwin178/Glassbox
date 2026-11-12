@@ -3,6 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 import { getConnection, lamportsToSol } from "@/lib/solana";
 import { isValidAddress, normalizeInput } from "@/lib/validation";
 import { fetchTokenHoldings } from "@/lib/tokens";
+import { recordUsage } from "@/lib/usage";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,8 @@ export async function GET(
       connection.getSignaturesForAddress(wallet, { limit: 20 }),
       fetchTokenHoldings(connection, wallet),
     ]);
+
+    await recordUsage("wallet_inspection");
 
     return NextResponse.json({
       address: wallet.toBase58(),
