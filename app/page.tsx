@@ -965,7 +965,9 @@ function MilestonesPanel() {
           <h3>Public review &amp; discussion</h3>
           <p className="muted">
             Community proposals are listed from the public Glassbox GitHub issue tracker.
-            Their discussion and comments remain publicly accessible; maintainers decide whether a proposal is accepted.
+            Their discussion and comments remain publicly accessible. A maintainer must review
+            and explicitly accept or reject each proposal; submitting an issue or pull request
+            does not mean it is approved, merged, or scheduled for implementation.
           </p>
           {publicIssuesLoading ? <p className="muted">Loading public proposals…</p> : null}
           {publicIssuesError ? <p className="error">{publicIssuesError} <a href="https://github.com/Godwin178/Glassbox/issues" target="_blank" rel="noopener noreferrer">View GitHub discussions</a>.</p> : null}
@@ -1032,6 +1034,9 @@ function MilestonesPanel() {
               </button>
             </p>
           </form>
+          <p className="muted">
+            Want to contribute code or documentation? Read the <a href="https://github.com/Godwin178/Glassbox/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contribution guide</a> or <a href="https://github.com/Godwin178/Glassbox/compare" target="_blank" rel="noopener noreferrer">open a pull request</a> from your fork.
+          </p>
         </>
       ) : null}
     </section>
