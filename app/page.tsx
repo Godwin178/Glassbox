@@ -269,6 +269,108 @@ function WalletInspector() {
   );
 }
 
+
+const FEATURED_TREASURIES = [
+  {
+    name: "Jito DAO",
+    address: "5eosrve6LktMZgVNsZYzebgmmC7BjLK8NoWyRQtcmGTF",
+  },
+  {
+    name: "Marinade DAO",
+    address: "B56RWQGf9RFw7t8gxPzrRvk5VRmB5DoF94aLoJ25YtvG",
+  },
+];
+
+function FeaturedTreasuries() {
+  const [wallets, setWallets] = useState<Record<string, WalletResult | null>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let active = true;
+    Promise.all(
+      FEATURED_TREASURIES.map(async (item) => {
+        try {
+          const data = await fetchJson<WalletResult>(`/api/wallet/${item.address}`);
+          if (active) {
+            setWallets((current) => ({ ...current, [item.address]: data }));
+            setErrors((current) => ({ ...current, [item.address]: "" }));
+          }
+        } catch (requestError) {
+          if (active) {
+            setErrors((current) => ({
+              ...current,
+              [item.address]: requestError instanceof Error
+                ? requestError.message
+                : "Could not load wallet data.",
+            }));
+          }
+        }
+      })
+    );
+    return () => { active = false; };
+  }, []);
+
+  return (
+    <section className="card" id="featured-treasuries">
+      <h2>Public Solana treasury wallets</h2>
+      <p className="muted">
+        Live, read-only on-chain information for selected public wallet addresses.
+        These listings are community-added examples; Glassbox does not claim affiliation
+        or official verification by the named projects.
+      </p>
+      <div className="stat-grid">
+        {FEATURED_TREASURIES.map((item) => {
+          const data = wallets[item.address];
+          return (
+            <div className="stat" key={item.address}>
+              <h3>{item.name}</h3>
+              <p className="mono">
+                <a href={`${EXPLORER}/address/${item.address}`} target="_blank" rel="noopener noreferrer">
+                  {item.address}
+                </a>
+              </p>
+              {data ? (
+                <>
+                  <div className="muted">Current balance</div>
+                  <div className="stat-value">{formatNumber(data.balanceSOL)} SOL</div>
+                  <p className="muted">
+                    {data.tokens.length} token accounts · {data.recentTransactions.length} recent transactions
+                  </p>
+                  <a href={`/api/reports/wallet/${item.address}`} download>Download wallet report (JSON)</a>
+                  {data.recentTransactions.length ? (
+                    <ul>
+                      {data.recentTransactions.slice(0, 5).map((tx) => (
+                        <li key={tx.signature}>
+                          <a href={`${EXPLORER}/tx/${tx.signature}`} target="_blank" rel="noopener noreferrer">
+                            {tx.signature.slice(0, 14)}…
+                          </a>
+                          {" · "}{tx.failed ? "Failed" : "Successful"}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : <p className="muted">No recent transactions returned.</p>}
+                </>
+              ) : (
+                <p className={errors[item.address] ? "error" : "muted"}>
+                  {errors[item.address] || "Loading live wallet data…"}
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className="stat">
+        <h3>MetaDAO</h3>
+        <p className="muted">
+          View MetaDAO's own public transparency dashboard:
+          {" "}<a href="https://metadao.fi/transparency" target="_blank" rel="noopener noreferrer">MetaDAO transparency</a>.
+          Glassbox does not currently have a separate MetaDAO wallet address configured.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function TransactionVerifier() {
   const [signature, setSignature] = useState("");
   const [result, setResult] = useState<TransactionResult | null>(null);
@@ -942,6 +1044,7 @@ export default function Home() {
           <a href="#wallet">Wallet</a>
           <a href="#transaction">Transactions</a>
           <a href="#funding">Funding</a>
+          <a href="#featured-treasuries">Treasuries</a>
           <a href="#milestones">Milestones</a>
           <a href="/demo">Funding demo</a>
           <a href="/methodology">Verification methodology</a>
@@ -960,6 +1063,7 @@ export default function Home() {
       <WalletInspector />
       <TransactionVerifier />
       <FundingPanel />
+      <FeaturedTreasuries />
       <MilestonesPanel />
 
       <section className="card">
