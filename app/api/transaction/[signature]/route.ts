@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { ParsedTransactionWithMeta } from "@solana/web3.js";
 import { getConnection, lamportsToSol } from "@/lib/solana";
 import { isValidSignature, normalizeInput } from "@/lib/validation";
+import { recordUsage } from "@/lib/usage";
 import {
   summarizeTokenBalanceChanges,
   toTokenBalanceEntries,
@@ -80,6 +81,8 @@ export async function GET(
     toTokenBalanceEntries(meta.preTokenBalances),
     toTokenBalanceEntries(meta.postTokenBalances)
   );
+
+  await recordUsage("transaction_verification");
 
   return NextResponse.json({
     signature,
