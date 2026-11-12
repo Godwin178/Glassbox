@@ -669,7 +669,7 @@ function scheduleEvidence(milestone: MilestoneEntry): string {
   if (milestone.status === "complete") {
     return milestone.dueDate ?? "See Git history";
   }
-  return "To be scheduled";
+  return milestone.dueDate ?? "To be scheduled";
 }
 
 function MilestonesPanel() {
