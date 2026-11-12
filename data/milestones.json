@@ -26,8 +26,8 @@
     },
     {
       "title": "Milestone 5: community proposal registry",
-      "description": "Publish a public registry for community proposals, with submissions, review status and discussion linked to the project's auditable records.",
-      "status": "planned",
+      "description": "Public proposal page is live: visitors can submit proposals as GitHub issues and view public discussion and review status. Pull-request submission and automatic promotion into the versioned proposal registry are not implemented yet.",
+      "status": "in-progress",
       "dueDate": "2026-12"
     },
     {
