@@ -15,6 +15,7 @@ interface TokenHolding {
   mint: string;
   decimals: number | null;
   uiAmount: number | null;
+  tokenProgram: string;
 }
 
 interface WalletResult {
@@ -331,12 +332,34 @@ function FeaturedTreasuries() {
               </p>
               {data ? (
                 <>
-                  <div className="muted">Current balance</div>
+                  <div className="muted">Native SOL balance</div>
                   <div className="stat-value">{formatNumber(data.balanceSOL)} SOL</div>
                   <p className="muted">
-                    {data.tokens.length} token accounts · {data.recentTransactions.length} recent transactions
+                    {data.tokens.length} token holdings · {data.recentTransactions.length} recent transactions
                   </p>
                   <a href={`/api/reports/wallet/${item.address}`} download>Download wallet report (JSON)</a>
+                  {data.tokens.length ? (
+                    <div className="token-holdings">
+                      <h4>Token holdings (not included in SOL balance)</h4>
+                      <ul>
+                        {data.tokens.slice(0, 5).map((token) => (
+                          <li key={token.account}>
+                            <span className="mono">
+                              {token.uiAmount === null ? "Amount unavailable" : formatNumber(token.uiAmount)}
+                            </span>
+                            {" · "}
+                            <a className="mono" href={`${EXPLORER}/address/${token.mint}`} target="_blank" rel="noopener noreferrer">
+                              {token.mint}
+                            </a>
+                            <span className="muted"> ({token.tokenProgram})</span>
+                          </li>
+                        ))}
+                      </ul>
+                      {data.tokens.length > 5 ? <p className="muted">Showing 5 of {data.tokens.length} token accounts. Download the report for the full list.</p> : null}
+                    </div>
+                  ) : (
+                    <p className="muted">No SPL or Token-2022 holdings were returned for this wallet.</p>
+                  )}
                   {data.recentTransactions.length ? (
                     <ul>
                       {data.recentTransactions.slice(0, 5).map((tx) => (
