@@ -1105,6 +1105,17 @@ export default function Home() {
         </ul>
       </section>
 
+      <section className="card" id="usage-transparency">
+        <h2>Usage reporting</h2>
+        <p className="muted">
+          Glassbox does not yet publish a global wallet-inspection or visitor
+          count. Inspections are currently read directly from the public Solana
+          network and are not stored in a durable usage analytics database.
+          We will publish usage figures only after they can be counted
+          consistently and verified without exposing users’ wallet queries.
+        </p>
+      </section>
+
       <section className="card">
         <h2>Security first</h2>
         <p>
