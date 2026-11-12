@@ -273,6 +273,12 @@ function WalletInspector() {
 
 const FEATURED_TREASURIES = [
   {
+    name: "Jupiter Community Cold Wallet",
+    address: "EXJHiMkj6NRFDfhWBMKccHNwdSpCT7tdvQeRf87yHmT6",
+    source: "https://explorer.solana.com/address/EXJHiMkj6NRFDfhWBMKccHNwdSpCT7tdvQeRf87yHmT6",
+    sourceLabel: "Public Solana Explorer address record",
+  },
+  {
     name: "MetaDAO",
     address: "6awyHMshBGVjJ3ozdSJdyyDE1CTAXUwrpNMaRGMsb4sf",
     source: "https://metadao.fi/transparency",
