@@ -739,6 +739,45 @@ function FundingPanel() {
   );
 }
 
+function UsagePanel() {
+  const [usage, setUsage] = useState<Record<string, number> | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    fetchJson<{ configured: boolean; total_wallet_inspections?: number; total_transaction_verifications?: number; today_wallet_inspections?: number; today_transaction_verifications?: number }>("/api/usage")
+      .then((data) => {
+        if (active && data.configured) setUsage(data);
+      })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, []);
+
+  return (
+    <section className="card" id="usage-transparency">
+      <h2>Verified platform usage</h2>
+      {usage ? (
+        <>
+          <div className="stat-grid">
+            <div className="stat">
+              <div className="muted">Wallet inspections</div>
+              <div className="stat-value">{usage.total_wallet_inspections ?? 0}</div>
+              <p className="muted">Today: {usage.today_wallet_inspections ?? 0}</p>
+            </div>
+            <div className="stat">
+              <div className="muted">Transaction verifications</div>
+              <div className="stat-value">{usage.total_transaction_verifications ?? 0}</div>
+              <p className="muted">Today: {usage.today_transaction_verifications ?? 0}</p>
+            </div>
+          </div>
+          <p className="muted">Counts record successful results, deduplicated once per event type per visitor per UTC day. No wallet addresses, transaction signatures or raw IP addresses are stored. Automated abuse may still affect public counters.</p>
+        </>
+      ) : (
+        <p className="muted">Usage reporting is initializing. Counts will appear after the first successful inspections are recorded.</p>
+      )}
+    </section>
+  );
+}
+
 interface MilestoneEntry {
   title: string;
   description?: string;
@@ -1105,16 +1144,7 @@ export default function Home() {
         </ul>
       </section>
 
-      <section className="card" id="usage-transparency">
-        <h2>Usage reporting</h2>
-        <p className="muted">
-          Glassbox does not yet publish a global wallet-inspection or visitor
-          count. Inspections are currently read directly from the public Solana
-          network and are not stored in a durable usage analytics database.
-          We will publish usage figures only after they can be counted
-          consistently and verified without exposing users’ wallet queries.
-        </p>
-      </section>
+      <UsagePanel />
 
       <section className="card">
         <h2>Security first</h2>
