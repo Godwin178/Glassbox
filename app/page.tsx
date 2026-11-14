@@ -766,12 +766,18 @@ function FundingPanel() {
 
 function UsagePanel() {
   const [usage, setUsage] = useState<{ total_wallet_inspections?: number; total_transaction_verifications?: number; today_wallet_inspections?: number; today_transaction_verifications?: number } | null>(null);
+  const [history, setHistory] = useState<{ date: string; wallet_inspections: number; transaction_verifications: number }[]>([]);
 
   useEffect(() => {
     let active = true;
     fetchJson<{ configured: boolean; total_wallet_inspections?: number; total_transaction_verifications?: number; today_wallet_inspections?: number; today_transaction_verifications?: number }>("/api/usage")
       .then((data) => {
         if (active && data.configured) setUsage(data);
+      })
+      .catch(() => undefined);
+    fetchJson<{ configured: boolean; days?: { date: string; wallet_inspections: number; transaction_verifications: number }[] }>("/api/usage/history")
+      .then((data) => {
+        if (active && data.configured) setHistory(data.days ?? []);
       })
       .catch(() => undefined);
     return () => { active = false; };
@@ -794,7 +800,22 @@ function UsagePanel() {
               <p className="muted">Today: {usage.today_transaction_verifications ?? 0}</p>
             </div>
           </div>
-          <p className="muted">Counts record successful results, deduplicated once per event type per visitor per UTC day. No wallet addresses, transaction signatures or raw IP addresses are stored. Automated abuse may still affect public counters.</p>
+          <h3>Daily usage history (last 14 UTC days)</h3>
+          {history.length ? (
+            <table className="data-table">
+              <thead><tr><th>UTC date</th><th>Wallet inspections</th><th>Transaction verifications</th></tr></thead>
+              <tbody>
+                {history.map((day) => (
+                  <tr key={day.date}>
+                    <td>{day.date}</td>
+                    <td>{day.wallet_inspections}</td>
+                    <td>{day.transaction_verifications}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : <p className="muted">Daily history is loading or not yet available.</p>}
+          <p className="muted">Lifetime totals are summed from permanently stored daily records and do not reset at UTC midnight. Daily figures show activity for that UTC date and naturally start again at zero each day. Counts are deduplicated once per event type per visitor IP hash per UTC day. No wallet addresses, transaction signatures or raw IP addresses are stored. Automated abuse or proxy-header spoofing may affect public counters; these are usage indicators, not independently audited unique-user metrics.</p>
         </>
       ) : (
         <p className="muted">Usage reporting is initializing. Counts will appear after the first successful inspections are recorded.</p>
