@@ -15,14 +15,16 @@
     {
       "guid": "glassbox-solana",
       "name": "Glassbox",
-      "description": "An open-source Solana transparency and accountability toolkit for wallet inspection, transaction verification, funding transparency, downloadable reports, and auditable project records. Seeking $45,000 in non-dilutive public-good grant support for six months of development, RPC reliability, security review, documentation, pilot adoption, and maintenance. Glassbox has no token.",
+      "description": "An open-source Solana transparency and accountability toolkit for wallet inspection, transaction verification, funding transparency, downloadable reports, and auditable project records. Seeking $15,000 in non-dilutive public-good grant support for development, security review, infrastructure, Solana integration, documentation, community testing, and contingency. Glassbox has no token.",
       "webpageUrl": {
         "url": "https://glassbox-opensource.vercel.app"
       },
       "repositoryUrl": {
         "url": "https://github.com/Godwin178/Glassbox"
       },
-      "licenses": ["spdx:MIT"],
+      "licenses": [
+        "spdx:MIT"
+      ],
       "tags": [
         "solana",
         "open-source",
@@ -45,12 +47,14 @@
       {
         "guid": "glassbox-public-good-support",
         "status": "active",
-        "name": "Glassbox six-month public-goods grant",
-        "description": "A $45,000 non-dilutive public-good grant request over six months: $10,000 for RPC reliability and caching; $7,500 for the community proposal registry; $7,500 for security review and remediation; $10,000 for pilot adoption with five Solana projects; and $10,000 for adoption reporting and maintenance runway.",
-        "amount": 45000,
+        "name": "Glassbox public-goods grant",
+        "description": "A $15,000 non-dilutive public-good grant request to support Glassbox development and delivery: $6,000 for software development; $2,500 for security review and testing; $1,500 for infrastructure and hosting; $2,000 for Solana integration and reliability testing; $1,000 for documentation and developer resources; $1,000 for community testing and feedback; and $1,000 contingency.",
+        "amount": 15000,
         "currency": "USD",
         "frequency": "one-time",
-        "channels": ["project-email"]
+        "channels": [
+          "project-email"
+        ]
       }
     ]
   }
