@@ -652,7 +652,7 @@ function FundingPanel() {
             <div className="stat-grid">
               <div className="stat">
                 <div className="muted">Grant funding target</div>
-                <div className="stat-value">$45,000 USD</div>
+                <div className="stat-value">$15,000 USD</div>
               </div>
               <div className="stat">
                 <div className="muted">Received on-chain</div>
@@ -705,7 +705,7 @@ function FundingPanel() {
               </a>
             </p>
             <p className="muted">
-              The $45,000 figure is the requested grant target. On-chain totals are
+              The $15,000 figure is the requested grant target. On-chain totals are
               shown in SOL and are not converted into USD, so no misleading
               fundraising percentage is displayed.
             </p>
@@ -751,7 +751,7 @@ function FundingPanel() {
               <p className="muted">
                 No incoming funding transactions were found in the analyzed
                 wallet history. The live on-chain totals are not seeded with demo
-                data. The $45,000 grant request is a target, not money received.
+                data. The $15,000 grant request is a target, not money received.
                 Anyone can independently inspect the wallet on Solana Explorer.
               </p>
             )}
