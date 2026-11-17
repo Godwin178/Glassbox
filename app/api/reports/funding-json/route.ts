@@ -34,7 +34,7 @@ export async function GET() {
     return NextResponse.json(
       {
         project: "Glassbox",
-        grantTargetUSD: 45000,
+        grantTargetUSD: 15000,
         currency: "SOL",
         wallet: wallet.toBase58(),
         totalReceivedSOL: lamportsToSol(summary.totalReceivedLamports),
