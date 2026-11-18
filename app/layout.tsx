@@ -51,6 +51,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <div style={{ padding: "10px 16px", textAlign: "center", background: "#14251d", borderBottom: "1px solid #287a4a", color: "inherit" }}>
+          <strong>Glassbox v0.1.0 is now released.</strong>{" "}
+          <a href="https://github.com/Godwin178/Glassbox/releases/tag/v0.1.0" target="_blank" rel="noopener noreferrer">View the first public release and notes</a>
+        </div>
         {children}
         <SpeedInsights />
       </body>
