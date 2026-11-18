@@ -4,6 +4,10 @@
 
 Glassbox is an independent, open-source project designed to make Solana blockchain activity easier to inspect, understand, and verify.
 
+## First public release
+
+**Glassbox v0.1.0 — First Public Release** is published. The release provides a versioned checkpoint for the current public toolkit and its next development priorities. See the [release notes](https://github.com/Godwin178/Glassbox/releases/tag/v0.1.0) and [all releases](https://github.com/Godwin178/Glassbox/releases).
+
 ## Our Mission
 
 To make blockchain transparency accessible through clear, verifiable information and public accountability tools.
