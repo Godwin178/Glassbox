@@ -49,7 +49,7 @@ export default function MethodologyPage() {
         <h2>5. Project records and audit trail</h2>
         <p>The roadmap and proposal registry are stored as version-controlled data in the public GitHub repository. Changes can be inspected in commit history. Planned dates are targets; a planned milestone is not represented as completed until its status and supporting evidence are updated.</p>
         <p>Public proposal discussions are linked to GitHub Issues. A submission is a request for review, not an approval or a promise of implementation.</p>
-        <p><a href="https://github.com/Godwin178/Glassbox" target="_blank" rel="noopener noreferrer">View source repository</a>{" · "}<a href="https://github.com/Godwin178/Glassbox/commits/main/" target="_blank" rel="noopener noreferrer">Review commit history</a>{" · "}<a href="https://github.com/Godwin178/Glassbox/issues" target="_blank" rel="noopener noreferrer">View public discussions</a></p>
+        <p><a href="https://github.com/Godwin178/Glassbox" target="_blank" rel="noopener noreferrer">View source repository</a>{" · "}<a href="https://github.com/Godwin178/Glassbox/commits/main/" target="_blank" rel="noopener noreferrer">Review commit history</a>{" · "}<a href="https://github.com/Godwin178/Glassbox/issues" target="_blank" rel="noopener noreferrer">View public discussions</a>{" · "}<a href="https://github.com/Godwin178/Glassbox/releases/tag/v0.1.0" target="_blank" rel="noopener noreferrer">Glassbox v0.1.0 first public release</a></p>
       </section>
       <section className="card">
         <h2>6. Limitations</h2>
