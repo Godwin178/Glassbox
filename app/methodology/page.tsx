@@ -41,7 +41,7 @@ export default function MethodologyPage() {
           <li><strong>Spent:</strong> outgoing SOL activity identified by that endpoint; transaction fees may be reported separately.</li>
           <li><strong>Current balance:</strong> the wallet balance returned at the time the report is generated.</li>
           <li><strong>Transactions analyzed:</strong> the activity count returned by the endpoint, not a count of donations.</li>
-          <li><strong>Grant target:</strong> the requested $45,000 in grant support; it is not money received and is not an on-chain fundraising percentage.</li>
+          <li><strong>Grant target:</strong> the requested $15,000 in grant support; it is not money received and is not an on-chain fundraising percentage.</li>
         </ul>
         <p>The funding wallet address shown on the live dashboard is the public address being inspected. Visitors can independently open it in Solana Explorer and compare public activity.</p>
       </section>
