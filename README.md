@@ -10,17 +10,18 @@ To make blockchain transparency accessible through clear, verifiable information
 
 ## Public-good funding request
 
-Glassbox is seeking **$45,000 in non-dilutive public-good grant support over six months**. The request is separate from contributions received: funding received is reported independently through the public on-chain funding panel and downloadable reports.
+Glassbox is seeking **$15,000 in non-dilutive public-good grant support over six months**. This request supports the remaining roadmap work and pilot adoption. Funding received is reported independently through the public on-chain funding panel and downloadable reports.
 
 | Grant milestone | Requested amount |
 | --- | ---: |
-| RPC reliability, dedicated providers and caching | $10,000 |
-| Community proposal registry | $7,500 |
-| Security review and remediation | $7,500 |
-| Pilot adoption with five Solana projects | $10,000 |
-| Adoption reporting and six-month maintenance runway | $10,000 |
-| **Total** | **$45,000** |
+| RPC reliability, dedicated providers and caching | $3,300 |
+| Community proposal registry | $2,500 |
+| Security review and remediation | $2,500 |
+| Pilot adoption with five Solana projects | $3,300 |
+| Adoption reporting and six-month maintenance runway | $3,400 |
+| **Total** | **$15,000** |
 
+The amounts above are planned allocations, not funds already received or spent. Actual receipts and expenditures will be reported separately.
 
 ## Features
 
@@ -64,21 +65,9 @@ Glassbox never requests private keys or seed phrases and performs read-only bloc
 
 ### Publishing milestones & proposals
 
-Milestones and community proposals are published as versioned JSON records, so every change is auditable in git history. The public proposal page currently accepts submissions as GitHub issues and displays public discussion and review status. This is not yet a pull-request-based proposal workflow, and submissions are not automatically added to `data/proposals.json`. Maintainers can update the versioned milestone and proposal records through pull requests to `data/milestones.json` or `data/proposals.json`:
+Milestones and community proposals are published as versioned JSON records, so every change is auditable in git history. The public proposal page currently accepts submissions as GitHub issues and displays public discussion and review status. This is not yet a pull-request-based proposal workflow, and submissions are not automatically added to `data/proposals.json`. Maintainers can update the versioned milestone and proposal records through pull requests to `data/milestones.json` or `data/proposals.json`.
 
-```json
-{
-  "milestones": [
-    {
-      "title": "Milestone 1: wallet inspection",
-      "description": "Shipped balance and token views.",
-      "status": "complete"
-    }
-  ]
-}
-```
-
-`title` is required; `description`, `status` and `dueDate` are optional. A completed milestone may carry a `dueDate` in `YYYY-MM` format, reflecting the month of its implementation commit in git history. Planned milestones may carry an explicitly approved target month; that date is a target, not evidence of completion. The dashboard displays the published status and schedule. The dashboard reads these files live, and unit tests guard the record schema.
+The dashboard reads these files live, and unit tests guard the record schema. See [ROADMAP.md](ROADMAP.md) for the human-readable delivery plan.
 
 ## Verification methodology
 
@@ -135,11 +124,12 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the ful
 
 - **Community proposal registry** — the public submission page, GitHub issue creation flow, and public discussion/review display are live. Pull-request-based submission and automatic inclusion in the versioned proposal registry are not implemented yet.
 
-**Planned development (not yet implemented):**
+**Planned development:**
 
 - **RPC reliability** — dedicated RPC provider support and response caching to shield the dashboard from public endpoint rate limits are not implemented yet.
+- **Pilot adoption** — recruit and support pilot projects; no pilot commitments are claimed in this README until confirmed.
 
-The authoritative, versioned roadmap lives in [data/milestones.json](data/milestones.json), rendered live on the dashboard's Milestones section.
+The authoritative, versioned roadmap lives in [data/milestones.json](data/milestones.json), rendered live on the dashboard's Milestones section. The delivery overview is [ROADMAP.md](ROADMAP.md).
 
 ## License
 
